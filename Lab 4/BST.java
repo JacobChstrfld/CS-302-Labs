@@ -8,8 +8,55 @@ public class BST
      */
     public static void problem(BST tree1, BST tree2)
     {
-        // Implement me!
+
+        int[] order1 = tree1.getPreOrder();
+        int k = order1.length;
+        Node r = tree1.find(tree2.getRootKey());
+        Node temp;
+        ArrayList<Node> completed = new ArrayList<>();
+
+        if(k >= 2) {
+            while(tree1.root != r){
+                if(r.parent.left == r && r.parent == tree1.root){
+                    tree1.rotateR(r.parent);
+                    tree1.root = r;
+                }
+                else if(r.parent.left == r)tree1.rotateR(r.parent);
+                else if(r.parent.right == r && r.parent == tree1.root){
+                    tree1.rotateL(r.parent);
+                    tree1.root = r;
+                }
+                else if(r.parent.right == r) tree1.rotateL(r.parent);
+            }
+            if(tree1.root.left != null && tree2.root.left != null){
+                tree1.root = tree1.root.left;
+                tree2.root = tree2.root.left;
+                problem(tree1, tree2);
+            }
+           if(tree1.root.right != null && tree2.root.right != null){
+                tree1.root = tree1.root.right;
+                tree2.root = tree2.root.right;
+                problem(tree1, tree2);
+            }
+
+            temp = tree1.root;
+            while (tree1.root.parent != null) tree1.root = tree1.root.parent;
+            order1 = tree1.getPreOrder();
+            k = order1.length;
+            tree1.root = temp;
+
+            if(completed.size() == k - 1) {
+                while (tree1.root.parent != null) tree1.root = tree1.root.parent;
+                while (tree2.root.parent != null) tree2.root = tree2.root.parent;
+            }
+        }
+        if(tree1.root.parent != null && tree2.root.parent != null) {
+            completed.add(tree1.root);
+            tree1.root = tree1.root.parent;
+            tree2.root = tree2.root.parent;
+        }
     }
+
 
     // ---------------------------------------------------------------------
     // Do not change any of the code below!

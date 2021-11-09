@@ -9,7 +9,60 @@ public class Lab3
      */
     private static void problem(byte[][] arr)
     {
-        // Implement me!
+        int[] c = new int[129];
+        int length = arr.length;
+
+        byte[][] newArr = new byte[length][];
+        int max = 0;
+        int start;
+        int temp = 0;
+
+        for(int i = 0; i < length; i++){
+            if(arr[i].length > max) max = arr[i].length;
+        }
+        //outer loop starting with least significant digit
+        for(int i = 0; i < max; i++){
+            start = temp;
+            //fill counting array with zeros
+            Arrays.fill(c, start);
+
+            //count
+            for(int j = start; j < length; j++){
+                if(i == arr[j].length){
+                    c[0]++;
+                    temp += 1;
+                }
+                else c[arr[j][i] + 1]++;
+            }
+
+            //counting sort stuff
+            for(int j = 1; j < 129; j++){
+                c[j] += c[j - 1] - start;
+            }
+            for(int j = 128; j > 0; j--){
+                c[j] = c[j - 1];
+            }
+            c[0] = start;
+
+            //build newArr
+            for(int j = start; j < length; j++){
+                if(i == arr[j].length) {
+                    newArr[c[0]] = arr[j];
+                    c[0]++;
+                }
+                else {
+                    newArr[c[arr[j][i] + 1]] = arr[j];
+                    c[arr[j][i] + 1]++;
+                }
+            }
+
+            //copy newArr to arr
+            for(int j = start; j < length; j++){
+                arr[j] = newArr[j];
+            }
+
+        }
+
     }
 
     // ---------------------------------------------------------------------

@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.*;
 
 public class Lab5
@@ -9,8 +8,25 @@ public class Lab5
      */
     private static int problem1(int[] arr, int k)
     {
-        // Implement me!
-        return 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int smallest = Integer.MAX_VALUE;
+        int count = 0;
+
+        for(int i = 0; i < arr.length; i++) {
+
+            if(map.containsKey(arr[i])){
+                count = map.get(arr[i]) + 1;
+                map.put(arr[i], count);
+                if(arr[i] < smallest && count >= k) smallest = arr[i];
+            }
+            else{
+                map.put(arr[i], 1);
+                if(arr[i] < smallest && 1 >= k) smallest = arr[i];
+            }
+
+        }
+
+        return smallest;
     }
 
     /**
@@ -18,10 +34,30 @@ public class Lab5
      */
     private static int[] problem2(int[] arr, int k)
     {
-        // Implement me!
         int i = -1;
         int j = -1;
+        int temp;
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int c = 0; c < arr.length; c++) {
+
+            if(map.containsKey(arr[c])) {
+
+                temp = map.get(arr[c]);
+
+                if(c - temp <= k) {
+                    i = temp;
+                    j = c;
+                    break;
+                }
+                else map.put(arr[c], c);
+            }
+
+            else map.put(arr[c], c);
+        }
+
         return new int[] { i, j };
+
     }
 
     // ---------------------------------------------------------------------
@@ -70,10 +106,10 @@ public class Lab5
         int i = answer[0];
         int j = answer[1];
         return i != j
-            && j - i <= k
-            && i >= 0
-            && j < arr.length
-            && arr[i] == arr[j];
+                && j - i <= k
+                && i >= 0
+                && j < arr.length
+                && arr[i] == arr[j];
     }
 
     public static void main(String args[])

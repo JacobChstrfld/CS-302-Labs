@@ -9,7 +9,30 @@ public class Lab2
      */
     private static void problem1(int[] arr, int k)
     {
-        // Implement me!
+        int[] a = new int[k + 1];
+        int next = k + 1;
+
+        for(int i =0; i < k + 1; i++){
+            a[i] = arr[i];
+        }
+
+        MinHeap m = new MinHeap(a);
+        ArrayList<Integer> list = new ArrayList<>();
+
+        while(next < arr.length){
+            list.add(m.removeMin());
+            m.add(arr[next]);
+            next++;
+        }
+
+        while(m.getSize() >= 1){
+            list.add(m.removeMin());
+        }
+
+        for(int j = 0; j < arr.length; j++){
+            arr[j] = list.get(j);
+        }
+
     }
 
     /**
@@ -17,8 +40,23 @@ public class Lab2
      */
     private static int problem2(int[] capasities, int k)
     {
-        // Implement me!
-        return -1;
+        for(int i = 0; i < capasities.length; i++){
+            capasities[i] *= -1;
+        }
+
+        MinHeap m = new MinHeap(capasities);
+        int answer = 0;
+        int current;
+
+        for(int j = 0; j < k; j++){
+
+            current = m.removeMin();
+            answer += current;
+            m.add(current/2);
+        }
+
+
+        return (answer *= -1);
     }
 
     // ---------------------------------------------------------------------
@@ -211,10 +249,10 @@ public class Lab2
         }
 
         return new int[][]
-        {
-            numbers,
-            new int[] { k, solution }
-        };
+                {
+                        numbers,
+                        new int[] { k, solution }
+                };
     }
 
     private static class ShuffleItem implements Comparable<ShuffleItem>

@@ -9,7 +9,23 @@ public class Lab6
      */
     private static void problem1(Graph g)
     {
-        // Implement me!
+        int[][] t = new int[g.noOfVertices][];
+        for(int i = 0; i < g.noOfVertices; i++) t[i] = new int[g.edges[i].length];
+
+        int[] c = new int[g.noOfVertices];
+        for(int i= 0; i < c.length; i++) c[i] = 0;
+
+
+        for(int i = 0; i < g.noOfVertices; i++) {
+            for(int j = 0; j < g.edges[i].length; j++) {
+                int num = g.edges[i][j];
+                int index = c[num];
+                t[num][index] = i;
+                c[num]++;
+            }
+        }
+
+        g.edges = t;
     }
 
     /**
@@ -17,8 +33,23 @@ public class Lab6
      */
     private static int[] problem2(Graph g, int startId)
     {
-        // Implement me!
-        return null;
+
+        int[] dist = new int[g.noOfVertices];
+        for(int i = 0; i < dist.length; i++) dist[i] = Integer.MAX_VALUE;
+        dist[startId] = 0;
+
+        int[] post = g.dfs(startId)[2];
+        int[] t = new int[g.noOfVertices];
+
+        for(int i = post.length - 1; i >= 0; i--) t[post.length - i - 1] = post[i];
+
+        for(int i = 0; i < t.length; i ++) {
+            int num = t[i];
+            if(num == -1) continue;
+            for(int j = 0; j < g.edges[num].length; j++) g.relax(num, j, dist);
+        }
+
+        return dist;
     }
 
     // ---------------------------------------------------------------------

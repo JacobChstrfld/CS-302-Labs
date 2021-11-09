@@ -1,5 +1,5 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Lab1
 {
@@ -10,6 +10,28 @@ public class Lab1
     private static void problem1(int[] arr)
     {
         // Implement me!
+
+        Arrays.sort(arr);
+        int[] newArr = new int[arr.length];
+        int oddIndex, evenIndex;
+        evenIndex = 0;
+        oddIndex = arr.length - 1;
+        if(oddIndex % 2 == 0) oddIndex -= 1;
+
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] % 2 == 0){
+                newArr[evenIndex] = arr[i];
+                evenIndex += 2;
+            }
+            else{
+                newArr[oddIndex] = arr[i];
+                oddIndex -= 2;
+            }
+        }
+
+        for(int j = 0; j < arr.length; j++){
+            arr[j] = newArr[j];
+        }
     }
 
     /**
@@ -18,7 +40,19 @@ public class Lab1
     private static int[] problem2(int[] arr)
     {
         // Implement me!
-        return new int[] { };
+
+        IntKVPair[] kvArr = new IntKVPair[arr.length];
+
+        for(int i = 0; i < arr.length; i++){
+            kvArr[i] = new IntKVPair(arr[i], i);
+        }
+
+        Arrays.sort(kvArr);
+
+        for(int j = 0; j < arr.length; j++){
+            arr[kvArr[j].value] = j;
+        }
+        return arr;
     }
 
     // ---------------------------------------------------------------------
